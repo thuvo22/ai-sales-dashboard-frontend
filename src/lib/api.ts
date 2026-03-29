@@ -220,6 +220,12 @@ export const api = {
   // ── Follow-Up Attribution ──
   getFollowUpAttribution: () =>
     apiFetch<FollowUpAttributionStats>("/api/admin/followup-attribution"),
+
+  // ── Unified Contact ──
+  getUnifiedContact: (identifier: string) =>
+    apiFetch<UnifiedContact>(
+      `/api/contacts/${encodeURIComponent(identifier)}/unified`
+    ),
 };
 
 // ── Report Types ──
@@ -236,6 +242,64 @@ export interface CallAnalysisReport {
   lead_quality: string | null;
   total_score: number | null;
   score_rating: string | null;
+}
+
+// ── Unified Contact Types ──
+export interface UnifiedTimelineItem {
+  source: string;
+  type: string;
+  direction: string;
+  sender: string;
+  body: string;
+  timestamp: string;
+}
+
+export interface UnifiedContactRecord {
+  id: string;
+  ghl_contact_id: string | null;
+  name: string;
+  phone: string;
+  source: string | null;
+  deal_status: string | null;
+  service_requested: string | null;
+  revenue: number | null;
+  tags: string[] | null;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface UnifiedMongoLead {
+  id: string;
+  source: string | null;
+  status: string | null;
+  wins: string | null;
+  quoted_amount: number | null;
+  convo_summary: string | null;
+  created_at: string;
+}
+
+export interface UnifiedThumbtackMeta {
+  url: string | null;
+  service: string | null;
+  location: string | null;
+  status: string | null;
+}
+
+export interface UnifiedContactMeta {
+  ghl_message_count: number;
+  zelle_payment_count: number;
+  has_thumbtack: boolean;
+  mongo_error: string | null;
+}
+
+export interface UnifiedContact {
+  contact: UnifiedContactRecord;
+  mongodb_lead: UnifiedMongoLead | null;
+  shadow_context: string | null;
+  thumbtack_conversation: string | null;
+  thumbtack_meta: UnifiedThumbtackMeta | null;
+  timeline: UnifiedTimelineItem[];
+  meta: UnifiedContactMeta;
 }
 
 // ── Follow-Up Attribution Types ──

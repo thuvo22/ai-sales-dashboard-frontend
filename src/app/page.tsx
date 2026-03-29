@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { LayoutDashboard, FileText } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LayoutDashboard, FileText, Users } from "lucide-react";
 import {
   api,
   type DashboardStats,
@@ -33,6 +34,7 @@ export default function DashboardPage() {
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"dashboard" | "reports">("dashboard");
+  const router = useRouter();
 
   // ── Fetch all dashboard data ──
   const fetchAll = useCallback(async () => {
@@ -131,6 +133,13 @@ export default function DashboardPage() {
               >
                 <FileText className="h-3.5 w-3.5" />
                 Reports
+              </button>
+              <button
+                onClick={() => router.push("/contacts")}
+                className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-gray-300"
+              >
+                <Users className="h-3.5 w-3.5" />
+                Contacts
               </button>
             </div>
             <div className="text-right text-xs text-gray-600">
